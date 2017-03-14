@@ -1,0 +1,180 @@
+<html>
+<head>
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/white.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <h3>Webpack</h3>
+            <img src="img/splash.png"/>
+        </section>
+        <section>
+            <section>
+                <h3>Manage your build</h3>
+                <ul>
+                    <li>Gulp || Grunt === task runners</li>
+                    <li>Webpack === module bundler</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Goals</h3>
+                <ul>
+                    <li>Split the dependency tree into chunks loaded on demand</li>
+                    <li>Keep initial loading time low</li>
+                    <li>Every static asset should be able to be a module</li>
+                    <li>Ability to integrate 3rd-party libraries as modules</li>
+                    <li>Ability to customize nearly every part of the module bundler</li>
+                    <li>Suited for big projects</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Setup by configuration file</h3>
+                <ul>
+                    <li><pre>webpack.config.js</pre> in project root directory</li>
+                    <li>See https://webpack.js.org/configuration/ for all configuration options</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Launch by command line</h3>
+                <ul>
+                    <li>Build : <pre>webpack</pre></li>
+                    <li>Start : <pre>webpack-dev-server</pre></li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                Minimal setup example
+            </section>
+            <section>
+                <h3>Everything is a module</h3>
+                <ul>
+                    <li>Even json files ? Yes !</li>
+                    <li>Even images ? Yes !</li>
+                    <li>Even CSS ? Yes !</li>
+                    <li>Even... ? Yes !</li>
+                </ul>
+            </section>
+            <section>
+                Example with image and css require
+                /!\ This needs loaders (see after)
+            </section>
+            <section>
+                Dependencies resolving
+                <ul>
+                    <li>One or several entry points</li>
+                    <li>Dependencies are detected through <pre>require</pre></li>
+                    <li>Dependencies are resolved using configured loaders</li>
+                    <li>Each required file should be processed by a loader (except native modules : .js and .json)</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Context</h3>
+                <ul>
+                    <li>The base directory for resolving entry points and loaders</li>
+                    <li><pre>context: path.resolve(__dirname, "src")</pre></li>
+                </ul>
+            </section>
+            <section>
+                <h3>Entry point(s)</h3>
+                <ul>
+                    <li>The point or points to enter the application</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Loaders</h3>
+                <ul>
+                    <li>Allow you to "convert" a file into a module</li>
+                    <li>Is applied to a file if the filename match the loader "test" property</li>
+                    <li>"test" property can be either a regex or a function</li>
+                    <li>Is identifiable by its name</li>
+                    <li>Has options (specific to each loader)</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Loader configuration example</h3>
+                Small loader configuration example
+            </section>
+            <section>
+                <h3>Loaders</h3>
+                <ul>
+                    <li>Json files does not need additional loader</li>
+                    <li>Images and other assets need file-loader or url-loader</li>
+                    <li>CSS needs css-loader</li>
+                </ul>
+            </section>
+            <section>
+                <h3>File or URL loader ?</h3>
+                <ul>
+                    <li></li>
+                </ul>
+            </section>
+            <section>
+                <h3>Chaining loaders</h3>
+                <ul>
+                    <li>Loaders can be chained</li>
+                    <li>Applied in the opposite way you declare it</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Loaders configuration</h3>
+                Configuration example with loaders
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Code splitting</h3>
+                <ul>
+                    <li>Webpack resolves dependencies (even dynamically)</li>
+                    <li>Split build easily</li>
+                    <li>Build part lazy loaded when needed</li>
+                    <li>Use require.ensure</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Code splitting</h3>
+                require.ensure example
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Clever URI parsing</h3>
+                <ul>
+                    <li>require("./i18n/" + lang + ".json") will require all the files in the ./i18n folder with the .json extension</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Not so clever URI parsing</h3>
+                <ul>
+                    <li>require(filePath) will require your whole project !!</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Plugin system</h3>
+            </section>
+        </section>
+        <section>
+            <h3>Conclusion</h3>
+            <ul>
+                <li>Dependencies resolved from one or several entry points</li>
+                <li>Loaders are applied to transform everything in module</li>
+            </ul>
+        </section>
+    </div>
+</div>
+<script src="js/reveal.js"></script>
+<script>
+    Reveal.initialize();
+</script>
+</body>
+</html>
