@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/white.css">
+    <link rel="stylesheet" href="css/custom.css">
 </head>
 <body>
 <div class="reveal">
@@ -12,21 +13,34 @@
         </section>
         <section>
             <section>
+                <h3>Summary</h3>
+                <ul>
+                    <li>What's webpack</li>
+                    <li>Configuration</li>
+                    <li>Loaders</li>
+                    <li>Plugin system</li>
+                    <li>Optimization</li>
+                    <li>Demo</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
                 <h3>Manage your build</h3>
                 <ul>
                     <li>Gulp || Grunt === task runners</li>
-                    <li>Webpack === module bundler</li>
+                    <li>Webpack === <strong>module bundler</strong></li>
                 </ul>
             </section>
             <section>
                 <h3>Goals</h3>
                 <ul>
-                    <li>Split the dependency tree into chunks loaded on demand</li>
-                    <li>Keep initial loading time low</li>
-                    <li>Every static asset should be able to be a module</li>
-                    <li>Ability to integrate 3rd-party libraries as modules</li>
-                    <li>Ability to customize nearly every part of the module bundler</li>
-                    <li>Suited for big projects</li>
+                    <li>Split the dependency tree into chunks loaded <strong>on demand</strong></li>
+                    <li>Keep initial <strong>loading time low</strong></li>
+                    <li>Every static asset should be able to be a <strong>module</strong></li>
+                    <li>Ability to integrate 3rd-party <strong>libraries as modules</strong></li>
+                    <li>Ability to <strong>customize</strong> nearly every part of the module bundler</li>
+                    <li>Suited for <strong>big projects</strong></li>
                 </ul>
             </section>
         </section>
@@ -34,21 +48,30 @@
             <section>
                 <h3>Setup by configuration file</h3>
                 <ul>
-                    <li><pre>webpack.config.js</pre> in project root directory</li>
+                    <li><strong>webpack.config.js</strong> in project root directory</li>
                     <li>See https://webpack.js.org/configuration/ for all configuration options</li>
                 </ul>
             </section>
             <section>
                 <h3>Launch by command line</h3>
                 <ul>
-                    <li>Build : <pre>webpack</pre></li>
-                    <li>Start : <pre>webpack-dev-server</pre></li>
+                    <li>Build : <pre class="inline">webpack</pre></li>
+                    <li>Start : <pre class="inline">webpack-dev-server</pre></li>
                 </ul>
             </section>
         </section>
         <section>
             <section>
-                Minimal setup example
+                <h3>The simplest configuration</h3>
+                <pre>var path = require('path');
+
+module.exports = {
+  entry: './foo.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'foo.bundle.js'
+  }
+};</pre>
             </section>
             <section>
                 <h3>Everything is a module</h3>
@@ -60,16 +83,20 @@
                 </ul>
             </section>
             <section>
-                Example with image and css require
-                /!\ This needs loaders (see after)
+                <h3>Require example</h3>
+                <pre>import * as React from "react";
+
+import myImage from "../images/myImage.jpeg";
+
+import "./App.scss";</pre>
             </section>
             <section>
-                Dependencies resolving
+                <h3>Dependencies resolving</h3>
                 <ul>
-                    <li>One or several entry points</li>
-                    <li>Dependencies are detected through <pre>require</pre></li>
-                    <li>Dependencies are resolved using configured loaders</li>
-                    <li>Each required file should be processed by a loader (except native modules : .js and .json)</li>
+                    <li>One or several entry <strong>points</strong></li>
+                    <li>Dependencies are detected through <strong>require</strong></li>
+                    <li>Dependencies are resolved using configured <strong>loaders</strong></li>
+                    <li>Each required file should be processed by at least one loader (except native modules)</li>
                 </ul>
             </section>
         </section>
@@ -84,7 +111,10 @@
             <section>
                 <h3>Entry point(s)</h3>
                 <ul>
-                    <li>The point or points to enter the application</li>
+                    <li>One or several entry <strong>points</strong></li>
+                    <li><pre>entry: {
+    app: './index.jsx'
+}</pre></li>
                 </ul>
             </section>
         </section>
@@ -92,41 +122,153 @@
             <section>
                 <h3>Loaders</h3>
                 <ul>
-                    <li>Allow you to "convert" a file into a module</li>
-                    <li>Is applied to a file if the filename match the loader "test" property</li>
-                    <li>"test" property can be either a regex or a function</li>
-                    <li>Is identifiable by its name</li>
-                    <li>Has options (specific to each loader)</li>
+                    <li>Allow you to <strong>convert</strong> a file into a <strong>module</strong></li>
+                    <li>Identifiable by its name</li>
+                    <li>Can take parameters</li>
                 </ul>
             </section>
             <section>
-                <h3>Loader configuration example</h3>
-                Small loader configuration example
+                <h3>Rules</h3>
+                <ul>
+                    <li><strong>Apply</strong> a list of <strong>loaders</strong> for all the files matching the "test" property</li>
+                    <li>"test" property can be either a regex or a function</li>
+                    <li>Can define <strong>options</strong> to pass to the loaders</li>
+                    <li>Loaders are applied in the opposite way you declare them</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Loaders configuration example</h3>
+                <pre>[{
+    test: /\.s?css$/,
+    use : [ {
+        loader : "style-loader"
+    }, {
+        loader : "css-loader"
+    }, {
+        loader : "postcss-loader"
+    }, {
+        loader  : "sass-loader",
+        options : {
+            sourceMap : true
+        }
+    }]
+}]</pre>
             </section>
             <section>
                 <h3>Loaders</h3>
                 <ul>
-                    <li>Json files does not need additional loader</li>
-                    <li>Images and other assets need file-loader or url-loader</li>
-                    <li>CSS needs css-loader</li>
+                    <li>Loaders can also be applied directly using <strong>require</strong> (without global rule)</li>
+                    <li><pre>import myImage from "file-loader?emitFile=false!./file.png"</pre></li>
                 </ul>
             </section>
             <section>
+                <h3>Loaders</h3>
+                <ul>
+                    <li>Json and javascript files does not need additional loader</li>
+                    <li>Images and other assets need file-loader or url-loader or ...</li>
+                    <li>CSS needs css-loader</li>
+                    <li>ES6 javascript files needs babel-loader</li>
+                    <li>etc...</li>
+                </ul>
+            </section>
+            <!--<section>
                 <h3>File or URL loader ?</h3>
                 <ul>
-                    <li></li>
+                    <li>File loader : load the file and rename it (if configured for renaming)</li>
+                    <li>URL loader : load the file and rename it (if configured to)</li>
                 </ul>
-            </section>
+            </section>-->
+        </section>
+        <section>
             <section>
-                <h3>Chaining loaders</h3>
+                <h3>Plugin system</h3>
                 <ul>
-                    <li>Loaders can be chained</li>
-                    <li>Applied in the opposite way you declare it</li>
+                    <li>Plugins are the backbone of webpack</li>
+                    <li>Webpack itself is built on this plugin system</li>
+                    <li>Used for doing anything else that a loader cannot do</li>
+                    <li>Examples : UglifyJsPlugin, HtmlWebpackPlugin, ...</li>
                 </ul>
             </section>
             <section>
-                <h3>Loaders configuration</h3>
-                Configuration example with loaders
+                <h3>Plugins configuration example</h3>
+                <pre>[
+    new webpack.optimize.CommonsChunkPlugin({
+        name: "vendor",
+        minChunks: function(module) {
+            return module.context && module.context.indexOf("node_modules") !== -1;
+        }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+        name: "manifest",
+        minChunks: Infinity
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+        minimize: true
+    })
+]</pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Development server</h3>
+                <ul>
+                    <li>webpack-dev-server</li>
+                    <li>Use the same webpack configuration as build</li>
+                    <li>Hot reload</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Development server</h3>
+                <pre>{
+        contentBase: isProduction ? buildPath : sourcePath,
+        port: 3000,
+        compress: isProduction,
+        inline: !isProduction,
+        hot: !isProduction,
+        host: '0.0.0.0',
+        stats: {
+            assets: true,
+            children: false,
+            chunks: false,
+            hash: false,
+            modules: false,
+            publicPath: false,
+            timings: true,
+            version: false,
+            warnings: true
+        },
+    }</pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Clever URI parsing</h3>
+                <ul>
+                    <li><pre>require("./i18n/" + lang + ".json")</pre> will require all the files in the ./i18n folder with the .json extension</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Not so clever URI parsing</h3>
+                <ul>
+                    <li><pre>require(filePath)</pre> will require your whole project !!</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h3>Production optimization</h3>
+                <ul>
+                    <li>Minify JS with UglifyJS plugin</li>
+                    <li>Minify CSS with css-loader</li>
+                    <li>etc...</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Tree shaking</h3>
+                <ul>
+                    <li>Webpack marks unused exports</li>
+                    <li>UglifyJS plugin can remove them</li>
+                </ul>
             </section>
         </section>
         <section>
@@ -135,40 +277,75 @@
                 <ul>
                     <li>Webpack resolves dependencies (even dynamically)</li>
                     <li>Split build easily</li>
-                    <li>Build part lazy loaded when needed</li>
-                    <li>Use require.ensure</li>
+                    <li>Build part <strong>lazy loaded when needed</strong></li>
+                    <li>Use <strong>require.ensure</strong></li>
                 </ul>
             </section>
             <section>
-                <h3>Code splitting</h3>
-                require.ensure example
+                <h3>Code splitting example</h3>
+                <pre>require.ensure([], require => {
+    const asyncModule = require('./asyncModule.jsx');
+    // Do what you want with your module here
+});</pre>
             </section>
         </section>
         <section>
             <section>
-                <h3>Clever URI parsing</h3>
+                <h3>Demo</h3>
                 <ul>
-                    <li>require("./i18n/" + lang + ".json") will require all the files in the ./i18n folder with the .json extension</li>
+                    <li>Single app page</li>
+                    <li>Router</li>
+                    <li>Public and secured parts</li>
                 </ul>
             </section>
             <section>
-                <h3>Not so clever URI parsing</h3>
+                <h3>Demo</h3>
                 <ul>
-                    <li>require(filePath) will require your whole project !!</li>
+                    <li>ES6, JSX, SCSS compilation</li>
+                    <li>Dev server</li>
+                    <li>JS, CSS optimization</li>
+                    <li>Code splitting</li>
+                    <li>Image resize</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Build time</h3>
+                <ul>
+                    <li>First run in <strong>dev</strong> : 8s</li>
+                    <li>First run in <strong>dev</strong> <strong>with images</strong> : 77s</li>
+                    <li><strong>Prod</strong> build : 29s</li>
+                    <li><strong>Prod</strong> build <strong>with images</strong> : 107s</li>
                 </ul>
             </section>
         </section>
         <section>
             <section>
-                <h3>Plugin system</h3>
+                <h3>Conclusion</h3>
+                <ul>
+                    <li>Dependencies resolved from <strong>one or several entry points</strong></li>
+                    <li>Loaders are applied to <strong>transform everything in module</strong></li>
+                    <li>More <strong>intelligent</strong> and more <strong>flexible</strong> than a task runner</li>
+                    <li>Can go further for <strong>more optimization</strong></li>
+                </ul>
+            </section>
+            <section>
+                <h3>Go further</h3>
+                <ul>
+                    <li>ES Lint</li>
+                    <li>Load polyfills on demand</li>
+                    <li>Offline plugin</li>
+                    <li>...</li>
+                </ul>
             </section>
         </section>
         <section>
-            <h3>Conclusion</h3>
-            <ul>
-                <li>Dependencies resolved from one or several entry points</li>
-                <li>Loaders are applied to transform everything in module</li>
-            </ul>
+            <section>
+                <h3>Sources</h3>
+                <ul>
+                    <li>https://webpack.js.org (webpack documentation)</li>
+                    <li>https://github.com (for source codes and examples)</li>
+                </ul>
+            </section>
         </section>
     </div>
 </div>

@@ -1,0 +1,52 @@
+.reveal section img {
+    border: none;
+    box-shadow: none;
+}
+
+.reveal section h3 {
+    margin: 0 0 1rem 0;
+    color: #2B3A42;
+}
+
+.reveal section li {
+    list-style-type: circle;
+    margin: 0 0 0.5rem 0;
+}
+
+.reveal section strong {
+    color: #74AFCB
+}
+
+.reveal section pre {
+    padding: 1rem;
+    background-color: #eee;
+}
+
+.reveal section blockquote{
+
+    width : 100%;
+    padding: .75rem .5rem .75rem 1rem;
+    background: white;
+    border-left: 0.5rem solid #DDD;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+
+}
+
+.reveal section blockquote::before {
+    display: block;
+    height: 0;
+    content: "“";
+    margin-left: -72rem !important;
+    font: italic 400%/1 Cochin,Georgia,"Times New Roman", serif;
+    color: #999;
+}
+
+.reveal section ul.decimal li {
+    list-style-type: decimal;
+    font-size: 2rem;
+}
+
+.reveal section pre.inline {
+    display: inline;
+    margin-left: 0.5rem;
+}
